@@ -1,0 +1,124 @@
+:root{
+  --verde: #48c3fc;         /* Color del banner superior */
+  --gris-oscuro: #3a3a3a;   /* Color del banner inferior */
+  --texto-claro: #ffffff;
+  --btn-bg: rgb(65, 66, 65);
+  --btn-fg: rgb(79, 199, 255);
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+/* ===== Banners ===== */
+.barra_superior{
+  position: fixed;      /* Si prefieres sticky: position: sticky; top: 0; */
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--verde);
+  color: #0b3003;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  gap: 12px;
+}
+
+.barra_superior_titulo{
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.barra_inferior{
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--gris-oscuro);
+  color: var(--texto-claro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 1000;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ===== Contenido ===== */
+.page{
+  /* Evitar que el contenido quede oculto bajo los banners fijos */
+  padding-top: 64px;      /* igual a height de .barra_superior */
+  padding-bottom: 56px;   /* igual a height de .barra_inferior */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+}
+
+h1{
+  margin: 26px 12px 6px;
+  text-align: center;
+}
+
+/* .form-login{
+  background-color: rgb(54, 208, 235);
+  padding: 32px;
+  border-radius: 10px;
+  width: min(500px, 92vw);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 12px auto 32px;
+} */
+
+.input{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.btn{
+  width: 100%;
+  padding: 12px;
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.25s ease, color 0.25s ease, transform .1s ease;
+}
+
+.btn:hover{
+  background-color: white;     /* invierte fondo */
+  color: var(--btn-bg);        /* y texto */
+}
+
+.btn:active{
+  transform: translateY(1px);
+}
+
+.btn:focus-visible{
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 480px){
+  .barra_superior{ height: 56px; }
+  .barra_inferior{ height: 48px; font-size: .9rem; }
+  .page{ padding-top: 56px; padding-bottom: 48px; }
+}
