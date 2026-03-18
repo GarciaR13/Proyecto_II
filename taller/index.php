@@ -13,7 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contra = $_POST['contra'];
 
     //Esto es para indicarle a MYQSL la consulta que va a realizar, obtendremos con el correo
-    $stmt = $conexion->prepare("SELECT contra FROM usuarios WHERE correo = ?");
+   
+    //Agregamos 'rol' a la consulta 
+    $stmt = $conexion->prepare("SELECT contra, rol FROM usuarios WHERE correo = ?");
+
     //aquí se indica el tipo de dato que se está enviando para revisar
     $stmt->bind_param('s', $correo);
     //se lanza la consulta
@@ -38,22 +41,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['Conectado'] = '1234567890';
             $_SESSION['correo'] = $correo;
 
-            //Inicio de validación de rol (Gabriel)
+            //Inicio de Redirección por Rol de Base de Datos
             
-            // Definimos el correo que queremos que sea Administrador
-            $correoAdmin = "admin@correo.com"; 
+            // Guardamos el rol que viene de la tabla de la base de datos
+            $_SESSION['rol'] = $row['rol']; 
 
-            if (strtolower($correo) === $correoAdmin) {
-                // Si el correo coincide, le damos el carnet de 'admin'
-                $_SESSION['rol'] = 'admin';
+            if ($_SESSION['rol'] === 'admin') {
+                // Si en la base de datos dice 'admin', va al panel
                 header('Location: admin.php');
             } else {
-                // Si no, le damos el carnet de 'cliente'
-                $_SESSION['rol'] = 'cliente';
+                // Si dice 'cliente' o cualquier otra cosa, va al catálogo
                 header('Location: prototipo_catalogo.php');
             }
 
-            //Fin de validación de rol (Gabriel)
+            //Fin de redirección
             
             exit();
         } else {

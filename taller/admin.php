@@ -23,8 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($accion === "eliminar_usuario") {
         $id = intval($_POST["id_usuario"] ?? 0);
         
-        // Evitar que el admin se elimine a sí mismo por error
-        if ($id > 0 && $_SESSION['correo'] !== "admin@correo.com") {
+        /*Validación de seguridad*/
+        // Primero consultamos el correo del usuario que se intenta borrar
+        $check = $conexion->prepare("SELECT correo FROM usuarios WHERE id = ?");
+        $check->bind_param("i", $id);
+        $check->execute();
+        $resCheck = $check->get_result();
+        $userABorrar = $resCheck->fetch_assoc();
+        
+        // Evitar que el admin se elimine a sí mismo por error (comparando correo y sesión)
+        if ($id > 0 && ($userABorrar['correo'] ?? '') !== "admin@correo.com") {
              $stmt = $conexion->prepare("DELETE FROM usuarios WHERE id = ?");
              $stmt->bind_param("i", $id);
              if ($stmt->execute()) {
@@ -36,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
              $mensaje = "No se puede eliminar la cuenta principal de administrador.";
         }
+        $check->close();
     }
 
     // Editar usuario (Nombre y Correo)
@@ -56,5 +65,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // Consulta para mostrar la tabla
-$resUsuarios = $conexion->query("SELECT id, nombre, correo, img FROM usuarios");
+$resUsuarios = $conexion->query("SELECT id, nombre, correo, img, rol FROM usuarios");
 ?>
