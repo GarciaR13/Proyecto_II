@@ -38,22 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['Conectado'] = '1234567890';
             $_SESSION['correo'] = $correo;
 
-            /*Inicio de edición Gabriel*/
+            //Inicio de validación de rol (Gabriel)
             
-            // Definimos el correo que tendrá privilegios de administrador
+            // Definimos el correo que queremos que sea Administrador
             $correoAdmin = "admin@correo.com"; 
 
-            if ($correo === $correoAdmin) {
+            if (strtolower($correo) === $correoAdmin) {
+                // Si el correo coincide, le damos el carnet de 'admin'
                 $_SESSION['rol'] = 'admin';
-                // Redirigir al Panel de Administración 
                 header('Location: admin.php');
             } else {
+                // Si no, le damos el carnet de 'cliente'
                 $_SESSION['rol'] = 'cliente';
-                // Redirigir al catálogo normal
                 header('Location: prototipo_catalogo.php');
             }
-            
-            /*Fin de Edición Gabriel*/
+
+            //Fin de validación de rol (Gabriel)
             
             exit();
         } else {
