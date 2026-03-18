@@ -37,8 +37,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //datos de la sesión
             $_SESSION['Conectado'] = '1234567890';
             $_SESSION['correo'] = $correo;
-            //para redirigirse a la otra sección y temrinar ejecución
-            header('Location: prototipo_catalogo.php');
+
+            /*Inicio de edición Gabriel*/
+            
+            // Definimos el correo que tendrá privilegios de administrador
+            $correoAdmin = "admin@correo.com"; 
+
+            if ($correo === $correoAdmin) {
+                $_SESSION['rol'] = 'admin';
+                // Redirigir al Panel de Administración 
+                header('Location: admin.php');
+            } else {
+                $_SESSION['rol'] = 'cliente';
+                // Redirigir al catálogo normal
+                header('Location: prototipo_catalogo.php');
+            }
+            
+            /*Fin de Edición Gabriel*/
+            
             exit();
         } else {
             $error = 'Contraseña incorrecta.';

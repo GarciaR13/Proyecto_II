@@ -5,13 +5,14 @@ session_start();
 // 2. Incluir tu archivo de conexión real
 include 'conexion.php';
 
-// 3. Verificación de sesión sincronizada con tu index.php
-// En tu index.php defines $_SESSION['Conectado'] = '1234567890'
-if (!isset($_SESSION['Conectado']) || $_SESSION['Conectado'] !== '1234567890') {
-    // Si no está conectado, enviamos al login real
+/*Inicio de verificación de usuario*/
+// Verificamos que esté conectado y que el rol asignado en index.php sea 'admin'
+if (!isset($_SESSION['Conectado']) || ($_SESSION['rol'] ?? '') !== 'admin') {
+    // Si no es admin, lo mandamos de vuelta al login
     header('Location: prototipo_login.php'); 
     exit();
 }
+/*Fin de verificación de usuario*/
 
 $mensaje = '';
 
@@ -63,7 +64,7 @@ $resUsuarios = $conexion->query("SELECT id, nombre, correo, img FROM usuarios");
     <title>Panel B&N - Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Estilo Blanco y Negro */
+
         body { background-color: #ffffff; color: #000000; font-family: sans-serif; }
         .sidebar {
             height: 100vh; width: 250px; position: fixed;
