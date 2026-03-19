@@ -6,4 +6,3 @@ if ($conexion->connect_error) {
     die("<p style='color:red;'>Error de conexión: " . $conexion->connect_error . "</p>");
 }
 
-?>
