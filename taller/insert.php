@@ -8,7 +8,9 @@ include 'conexion.php';
        $ruta_destino = "images/" . basename($nombre_imagen);
 
        if (move_uploaded_file($ruta_temp, $ruta_destino)) {
-           $sql = "INSERT INTO usuarios (nombre, contra, img) VALUES ('$nombre_usuario', '$contra', '$ruta_destino')";
+           // Se agregó la columna 'rol' con el valor 'cliente' por defecto para nuevos registros
+           $sql = "INSERT INTO usuarios (nombre, contra, img, rol) VALUES ('$nombre_usuario', '$contra', '$ruta_destino', 'cliente')";
+           
            if ($conexion->query($sql) === TRUE) {
                 header("Location: main.php");
                 exit();

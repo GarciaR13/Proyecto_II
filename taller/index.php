@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Esto es para indicarle a MYQSL la consulta que va a realizar, obtendremos con el correo
    
     //Agregamos 'rol' a la consulta 
-    $stmt = $conexion->prepare("SELECT contra, rol FROM usuarios WHERE correo = ?");
+    /*También pedimos el 'nombre' para que main.php no rebote*/
+    $stmt = $conexion->prepare("SELECT nombre, contra, rol FROM usuarios WHERE correo = ?");
 
     //aquí se indica el tipo de dato que se está enviando para revisar
     $stmt->bind_param('s', $correo);
@@ -40,11 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //datos de la sesión
             $_SESSION['Conectado'] = '1234567890';
             $_SESSION['correo'] = $correo;
+            
+            /*Guardamos el nombre*/
+            $_SESSION['nombre'] = $row['nombre'];
 
             //Inicio de Redirección por Rol de Base de Datos
             
             // Guardamos el rol que viene de la tabla de la base de datos
-            $_SESSION['rol'] = $row['rol']; 
+            /*Usamos trim para asegurar que no haya espacios*/
+            $_SESSION['rol'] = trim($row['rol']); 
 
             if ($_SESSION['rol'] === 'admin') {
                 // Si en la base de datos dice 'admin', va al panel
